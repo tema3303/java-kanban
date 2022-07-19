@@ -1,5 +1,8 @@
-public class Task {
+package tasks;
 
+import constans.Status;
+
+public class Task {
     protected String name;
     protected String description;
     protected int id;
@@ -50,7 +53,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
+        return "Tasks.Task{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", id=" + id +
