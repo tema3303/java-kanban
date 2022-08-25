@@ -7,6 +7,7 @@ import constans.Status;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 public class InMemoryTaskManager implements TaskManager {
     private Map<Integer, Task> tasks = new HashMap<>();
@@ -220,7 +221,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void getTaskHistory() {
-        System.out.println(historyManager.getHistory());
+    public List<Task> getTaskHistory() {
+        return historyManager.getHistory();
     }
 }

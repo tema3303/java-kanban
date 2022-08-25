@@ -26,7 +26,7 @@ public class Main {
         taskManager.addSubTask(subTask3);
 
         taskManager.getIdTask(1);
-        taskManager.getTaskHistory();
+        System.out.println(taskManager.getTaskHistory());
         taskManager.getIdTask(0);
         taskManager.getIdSubTask(4);
         taskManager.getIdEpic(2);
@@ -39,6 +39,6 @@ public class Main {
         taskManager.getIdEpic(2);
 
         System.out.println(' ');
-        taskManager.getTaskHistory();
+        System.out.println(taskManager.getTaskHistory());
     }
 }
