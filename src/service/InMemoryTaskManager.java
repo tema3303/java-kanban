@@ -13,6 +13,7 @@ public class InMemoryTaskManager implements TaskManager {
     private Map<Integer, SubTask> subTasks = new HashMap<>();
     private Map<Integer, Epic> epics = new HashMap<>();
     private int generator = 0;
+    HistoryManager historyManager = Managers.getDefaultHistory();
 
     @Override
     public void addTask(Task task) {
@@ -77,6 +78,7 @@ public class InMemoryTaskManager implements TaskManager {
             System.out.println(epic);
         }
     }
+
     @Override
     public void getAllSubTask() {
         for (SubTask subTask : subTasks.values()) {
@@ -108,7 +110,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void getIdTask(int idTask) {
         if (tasks.containsKey(idTask)) {
             System.out.println(tasks.get(idTask));
-            Managers.getDefaultHistory().add(tasks.get(idTask));
+            historyManager.add(tasks.get(idTask));
         } else {
             System.out.println("Задачи с таким id не сущетсвует");
         }
@@ -118,7 +120,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void getIdEpic(int idEpic) {
         if (epics.containsKey(idEpic)) {
             System.out.println(epics.get(idEpic));
-            Managers.getDefaultHistory().add(epics.get(idEpic));
+            historyManager.add(epics.get(idEpic));
         } else {
             System.out.println("Эпика с таким id не сущетсвует");
         }
@@ -128,7 +130,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void getIdSubTask(int idSubTask) {
         if (subTasks.containsKey(idSubTask)) {
             System.out.println(subTasks.get(idSubTask));
-            Managers.getDefaultHistory().add(subTasks.get(idSubTask));
+            historyManager.add(subTasks.get(idSubTask));
         } else {
             System.out.println("Подзадачи с таким id не сущетсвует");
         }
@@ -215,5 +217,10 @@ public class InMemoryTaskManager implements TaskManager {
             }
         }
         updateEpicStatus(epics.get(subTask.getEpicId()));
+    }
+
+    @Override
+    public void getTaskHistory() {
+        System.out.println(historyManager.getHistory());
     }
 }

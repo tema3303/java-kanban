@@ -6,7 +6,6 @@ import tasks.Task;
 
 public class Main {
     public static void main(String[] args) {
-        HistoryManager historyManager = Managers.getDefaultHistory();
         TaskManager taskManager = Managers.getDefault();
 
         Task task1 = new Task("Task 1", "Описание задачи 1", Status.NEW);
@@ -27,11 +26,10 @@ public class Main {
         taskManager.addSubTask(subTask3);
 
         taskManager.getIdTask(1);
-        System.out.println("История просмотров: " + historyManager.getHistory());
+        taskManager.getTaskHistory();
         taskManager.getIdTask(0);
         taskManager.getIdSubTask(4);
         taskManager.getIdEpic(2);
-        System.out.println("История просмотров: " + historyManager.getHistory());
         taskManager.getIdTask(1);
         taskManager.getIdEpic(3);
         taskManager.getIdSubTask(5);
@@ -41,6 +39,6 @@ public class Main {
         taskManager.getIdEpic(2);
 
         System.out.println(' ');
-        System.out.println("История просмотров: " + historyManager.getHistory());
+        taskManager.getTaskHistory();
     }
 }

@@ -5,7 +5,6 @@ import tasks.SubTask;
 import tasks.Task;
 
 public interface TaskManager {
-
     void addTask(Task task);
 
     void addSubTask(SubTask subTask);
@@ -45,4 +44,6 @@ public interface TaskManager {
     void updateEpic(Epic epic, Integer i);
 
     void updateSubTask(SubTask subTask, Integer i);
+
+    void getTaskHistory();
 }

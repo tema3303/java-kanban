@@ -1,7 +1,2 @@
 
-{
-java:S1192"fDefine a constant instead of duplicating this literal "Ğ˜ÑÑ‚Ğ¾Ñ€Ğ¸Ñ Ğ¿Ñ€Ğ¾ÑĞ¼Ğ¾Ñ‚Ñ€Ğ¾Ğ²: " 3 times.(š’Àn
-M	java:S106"9Replace this use of System.out or System.err by a logger.(š’Àn
-M	java:S106""9Replace this use of System.out or System.err by a logger.(š’Àn
-N	java:S106+"9Replace this use of System.out or System.err by a logger.(Ø¶öË
-M	java:S106,"9Replace this use of System.out or System.err by a logger.(š’Àn
+N	java:S106)"9Replace this use of System.out or System.err by a logger.(Ø¶öË
