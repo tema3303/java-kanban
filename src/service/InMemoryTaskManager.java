@@ -111,7 +111,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void getIdTask(int idTask) {
         if (tasks.containsKey(idTask)) {
             System.out.println(tasks.get(idTask));
-            historyManager.add(tasks.get(idTask));
+            historyManager.add(tasks.get(idTask));//добавляем историю
         } else {
             System.out.println("Задачи с таким id не сущетсвует");
         }
@@ -121,7 +121,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void getIdEpic(int idEpic) {
         if (epics.containsKey(idEpic)) {
             System.out.println(epics.get(idEpic));
-            historyManager.add(epics.get(idEpic));
+            historyManager.add(epics.get(idEpic));//добавляем историю
         } else {
             System.out.println("Эпика с таким id не сущетсвует");
         }
@@ -131,7 +131,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void getIdSubTask(int idSubTask) {
         if (subTasks.containsKey(idSubTask)) {
             System.out.println(subTasks.get(idSubTask));
-            historyManager.add(subTasks.get(idSubTask));
+            historyManager.add(subTasks.get(idSubTask));//добавляем историю
         } else {
             System.out.println("Подзадачи с таким id не сущетсвует");
         }
@@ -153,12 +153,14 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void removeByIdTask(int id) {
         tasks.remove(id);
+        historyManager.remove(id);//удаляем историю
     }
 
     @Override
     public void removeByIdSubTask(int id) {
         int epicId = subTasks.get(id).getEpicId();
         subTasks.remove(id);
+        historyManager.remove(id);//удаляем историю
         for (int i = 0; i < epics.get(epicId).getSubTaskId().size(); i++) {
             if (epics.get(epicId).getSubTaskId().get(i) == id) {
                 epics.get(epicId).getSubTaskId().remove(i);
@@ -172,10 +174,12 @@ public class InMemoryTaskManager implements TaskManager {
         for (SubTask s : subTasks.values()) {
             if (id == s.getEpicId()) {
                 subTasks.put(s.getId(), null);
+                historyManager.remove(s.getId());//удаляем историю
             }
         }
-        while (subTasks.values().remove(null)) ;
+        while (subTasks.values().remove(null));
         epics.remove(id);
+        historyManager.remove(id);//удаляем историю
     }
 
     @Override
