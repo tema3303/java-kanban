@@ -1,6 +1,7 @@
 package tasks;
 
 import constans.Status;
+import constans.TaskType;
 
 public class SubTask extends Task {
     private int epicId;
@@ -16,6 +17,10 @@ public class SubTask extends Task {
 
     public void setEpicId(int epicId) {
         this.epicId = epicId;
+    }
+
+    public TaskType getTaskType(){
+        return TaskType.SUB_TASK;
     }
 
     @Override

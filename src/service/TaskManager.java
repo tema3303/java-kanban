@@ -27,11 +27,11 @@ public interface TaskManager {
 
     void removeAllSubTask();
 
-    void getIdTask(int idTask);
+    Task getIdTask(int idTask);
 
-    void getIdEpic(int idEpic);
+    Task getIdEpic(int idEpic);
 
-    void getIdSubTask(int idSubTask);
+    Task getIdSubTask(int idSubTask);
 
     void getEpicSubTask(int idEpic);
 

@@ -10,10 +10,10 @@ import java.util.Map;
 import java.util.List;
 
 public class InMemoryTaskManager implements TaskManager {
-    private Map<Integer, Task> tasks = new HashMap<>();
-    private Map<Integer, SubTask> subTasks = new HashMap<>();
-    private Map<Integer, Epic> epics = new HashMap<>();
-    private int generator = 0;
+    protected Map<Integer, Task> tasks = new HashMap<>();
+    protected Map<Integer, SubTask> subTasks = new HashMap<>();
+    protected Map<Integer, Epic> epics = new HashMap<>();
+    protected int generator = 0;
     HistoryManager historyManager = Managers.getDefaultHistory();
 
     @Override
@@ -120,32 +120,32 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void getIdTask(int idTask) {
+    public Task getIdTask(int idTask) {
         if (tasks.containsKey(idTask)) {
-            System.out.println(tasks.get(idTask));
             historyManager.add(tasks.get(idTask));//добавляем историю
+            return tasks.get(idTask);
         } else {
-            System.out.println("Задачи с таким id не сущетсвует");
+            return null;
         }
     }
 
     @Override
-    public void getIdEpic(int idEpic) {
+    public Task getIdEpic(int idEpic) {
         if (epics.containsKey(idEpic)) {
-            System.out.println(epics.get(idEpic));
             historyManager.add(epics.get(idEpic));//добавляем историю
+            return epics.get(idEpic);
         } else {
-            System.out.println("Эпика с таким id не сущетсвует");
+            return null;
         }
     }
 
     @Override
-    public void getIdSubTask(int idSubTask) {
+    public Task getIdSubTask(int idSubTask) {
         if (subTasks.containsKey(idSubTask)) {
-            System.out.println(subTasks.get(idSubTask));
             historyManager.add(subTasks.get(idSubTask));//добавляем историю
+            return subTasks.get(idSubTask);
         } else {
-            System.out.println("Подзадачи с таким id не сущетсвует");
+            return null;
         }
     }
 
