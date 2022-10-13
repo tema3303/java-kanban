@@ -49,18 +49,18 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void getAllTask() {
-        super.getAllTask();
+    public List getAllTask() {
+        return super.getAllTask();
     }
 
     @Override
-    public void getAllEpic() {
-        super.getAllEpic();
+    public List getAllEpic() {
+        return super.getAllEpic();
     }
 
     @Override
-    public void getAllSubTask() {
-        super.getAllSubTask();
+    public List getAllSubTask() {
+        return super.getAllSubTask();
     }
 
     @Override
@@ -97,8 +97,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void getEpicSubTask(int idEpic) {
-        super.getEpicSubTask(idEpic);
+    public List getEpicSubTask(int idEpic) {
+        return super.getEpicSubTask(idEpic);
     }
 
     @Override
@@ -146,9 +146,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     private void save() {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
-
-            bufferedWriter.write("id,type,name,status,description,epic");
-            bufferedWriter.newLine();
+            bufferedWriter.write("id,type,name,status,description,epic\n");
             taskToString(bufferedWriter, tasks.values());
             taskToString(bufferedWriter, epics.values());
             subToString(bufferedWriter, subTasks.values());
@@ -250,7 +248,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     public static void main(String[] args) {
-
         TaskManager taskManager = Managers.getDefault();
 
         Task task1 = new Task("Задача 1", "Описание задачи 1", Status.NEW);//0
@@ -276,6 +273,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         System.out.println(taskManager.getIdSubTask(5));
         System.out.println(taskManager.getIdTask(0));
 
+        System.out.println(" ");
         System.out.println(taskManager.getTaskHistory());
         System.out.println(" ");
 

@@ -1,8 +1,3 @@
 
-S	java:S106H"9Replace this use of System.out or System.err by a logger.(ÍÖÖûÿÿÿÿ
-N	java:S106O"9Replace this use of System.out or System.err by a logger.(ÃÜ²
-N	java:S106V"9Replace this use of System.out or System.err by a logger.(ŒÏóú
-V	java:S106"9Replace this use of System.out or System.err by a logger.(ŒÏóú8„¨²ì¼0
-V	java:S106¡"9Replace this use of System.out or System.err by a logger.(«¢é­8„¨²ì¼0
 E
-java:S5413²")Verify that "remove()" is used correctly.(Ö£„§øÿÿÿÿ
+java:S5413¹")Verify that "remove()" is used correctly.(Ö£„§øÿÿÿÿ

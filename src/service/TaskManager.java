@@ -15,11 +15,11 @@ public interface TaskManager {
 
     void addEpic(Epic epic);
 
-    void getAllTask();
+    List getAllTask();
 
-    void getAllEpic();
+    List getAllEpic();
 
-    void getAllSubTask();
+    List getAllSubTask();
 
     void removeAllTask();
 
@@ -33,7 +33,7 @@ public interface TaskManager {
 
     Task getIdSubTask(int idSubTask);
 
-    void getEpicSubTask(int idEpic);
+    List getEpicSubTask(int idEpic);
 
     void removeByIdTask(int id);
 

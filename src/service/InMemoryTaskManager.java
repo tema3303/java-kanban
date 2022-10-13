@@ -5,6 +5,7 @@ import tasks.SubTask;
 import tasks.Task;
 import constans.Status;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
@@ -67,24 +68,30 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void getAllTask() {
+    public List getAllTask() {
+        List<Task> taskList = new ArrayList<>();
         for (Task task : tasks.values()) {
-            System.out.println(task);
+            taskList.add(task);
         }
+        return taskList;
     }
 
     @Override
-    public void getAllEpic() {
+    public List getAllEpic() {
+        List<Epic> epicList = new ArrayList<>();
         for (Epic epic : epics.values()) {
-            System.out.println(epic);
+            epicList.add(epic);
         }
+        return epicList;
     }
 
     @Override
-    public void getAllSubTask() {
+    public List getAllSubTask() {
+        List<SubTask> subList = new ArrayList<>();
         for (SubTask subTask : subTasks.values()) {
-            System.out.println(subTask);
+            subList.add(subTask);
         }
+        return subList;
     }
 
     @Override
@@ -150,16 +157,16 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void getEpicSubTask(int idEpic) {
+    public List getEpicSubTask(int idEpic) {
+        List<SubTask> epicSub = new ArrayList<>();
         if (epics.containsKey(idEpic)) {
             for (SubTask subTask : subTasks.values()) {
                 if (idEpic == subTask.getEpicId()) {
-                    System.out.println(subTask);
+                    epicSub.add(subTask);
                 }
             }
-        } else {
-            System.out.println("Эпика с таким id не сущетсвует!");
         }
+        return epicSub;
     }
 
     @Override
