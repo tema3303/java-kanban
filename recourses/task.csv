@@ -1,9 +1,7 @@
-id,type,name,status,description,epic
-0,TASK,Задача 2,DONE,Описание задачи 2
-1,EPIC,Epic 1,NEW,Описание эпика 1
-2,EPIC,Epic 2,IN_PROGRESS,Описание эпика 2
-3,SUB_TASK,Subtask 1,IN_PROGRESS,Описание подзадачи 1,2
-4,SUB_TASK,Subtask 2,DONE,Описание подзадачи 2,2
-5,SUB_TASK,Subtask 3,NEW,Описание подзадачи 3,2
+id,type,name,status,description,epic,startTime,duration,endTime
+0,TASK,Задача 2,DONE,Описание задачи 2,2022-10-02T02:00,120,2022-10-02T04:00
+1,EPIC,Epic 1,NEW,Описание эпика 1,2021-10-02T02:00,220,2021-10-10T02:00
+2,EPIC,Epic 2,IN_PROGRESS,Описание эпика 2,2021-10-02T02:00,220,2021-10-10T02:00
+3,SUB_TASK,Subtask 1,IN_PROGRESS,Описание подзадачи 1,2021-10-10T02:00,100,2021-10-10T03:40,2
+4,SUB_TASK,Subtask 2,DONE,Описание подзадачи 2,2021-10-02T02:00,120,2021-10-02T04:00,2
 
-1,2,5,0,

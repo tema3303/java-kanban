@@ -13,9 +13,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import static java.util.Calendar.NOVEMBER;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
     private final File file;
@@ -137,6 +141,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         save();
     }
 
+
+
     @Override
     public List<Task> getTaskHistory() {
         List<Task> history = super.getTaskHistory();
@@ -146,7 +152,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     private void save() {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
-            bufferedWriter.write("id,type,name,status,description,epic\n");
+            bufferedWriter.write("id,type,name,status,description,epic,startTime,duration,endTime\n");
             taskToString(bufferedWriter, tasks.values());
             taskToString(bufferedWriter, epics.values());
             subToString(bufferedWriter, subTasks.values());
@@ -160,7 +166,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     private <T extends Task> void taskToString(BufferedWriter bufferedWriter, Collection<T> tasks) throws IOException {
         for (Task value : tasks) {
             bufferedWriter.write(value.getId() + "," + value.getTaskType() + "," + value.getName() + ","
-                    + value.getStatus() + "," + value.getDescription());
+                    + value.getStatus() + "," + value.getDescription() + "," + value.getStartTime() + ","
+            + value.getDuration() + "," + value.getEndTime());
             bufferedWriter.newLine();
         }
     }
@@ -168,7 +175,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     private void subToString(BufferedWriter bufferedWriter, Collection<SubTask> tasks) throws IOException {
         for (SubTask value : tasks) {
             bufferedWriter.write(value.getId() + "," + value.getTaskType() + "," + value.getName() + ","
-                    + value.getStatus() + "," + value.getDescription() + "," + value.getEpicId());
+                    + value.getStatus() + "," + value.getDescription() + "," + value.getStartTime() + ","
+                    + value.getDuration() + "," + value.getEndTime() + "," + value.getEpicId());
             bufferedWriter.newLine();
         }
     }
@@ -224,22 +232,30 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         Integer id = Integer.valueOf(values[0]);
         TaskType type = TaskType.valueOf(values[1]);
         Status status = Status.valueOf(values[3]);
+        LocalDateTime startTime = LocalDateTime.parse(values[5]);
+        Integer duration = Integer.valueOf(values[6]);
+        LocalDateTime endTime = LocalDateTime.parse(values[7]);
 
         switch (type) {
             case TASK:
-                Task task = new Task(title, description, status);
+                Task task = new Task(title, description, status,startTime,duration);
                 task.setId(id);
+                task.getEndTime();
                 addTask(task);
                 return task;
             case EPIC:
                 Epic epic = new Epic(title, description, status);
                 epic.setId(id);
+                epic.setStartTime(startTime);
+                epic.setDuration(duration);
+                epic.setEndTime(endTime);
                 addEpic(epic);
                 return epic;
             case SUB_TASK:
-                Integer epicId = Integer.valueOf(values[5]);
-                SubTask subtask = new SubTask(title, description, status, epicId);
+                Integer epicId = Integer.valueOf(values[8]);
+                SubTask subtask = new SubTask(title, description, status, startTime, duration, epicId);
                 subtask.setId(id);
+                subtask.getEndTime();
                 addSubTask(subtask);
                 return subtask;
             default:
@@ -250,8 +266,12 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     public static void main(String[] args) {
         TaskManager taskManager = Managers.getDefault();
 
-        Task task1 = new Task("Задача 1", "Описание задачи 1", Status.NEW);//0
-        Task task2 = new Task("Задача 2", "Описание задачи 2", Status.DONE);//1
+        Task task1 = new Task("Задача 1", "Описание задачи 1", Status.NEW,
+                LocalDateTime.of(2022,NOVEMBER,2,2,0),
+                60);//0
+        Task task2 = new Task("Задача 2", "Описание задачи 2", Status.DONE,
+                LocalDateTime.of(2022,NOVEMBER,2,2,0),
+                120);//1
         taskManager.addTask(task1);
         taskManager.addTask(task2);
 
@@ -260,9 +280,15 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         taskManager.addEpic(epic1);
         taskManager.addEpic(epic2);
 
-        SubTask subTask1 = new SubTask("Subtask 1", "Описание подзадачи 1", Status.IN_PROGRESS, epic1.getId());//4
-        SubTask subTask2 = new SubTask("Subtask 2", "Описание подзадачи 2", Status.DONE, epic1.getId());//5
-        SubTask subTask3 = new SubTask("Subtask 3", "Описание подзадачи 3", Status.NEW, epic1.getId());//6
+        SubTask subTask1 = new SubTask("Subtask 1", "Описание подзадачи 1", Status.IN_PROGRESS ,
+                LocalDateTime.of(2021,NOVEMBER,10,2,0),
+                100, epic1.getId());//4
+        SubTask subTask2 = new SubTask("Subtask 2", "Описание подзадачи 2", Status.DONE,
+                LocalDateTime.of(2021,NOVEMBER,2,2,0),
+                120, epic1.getId());//5
+        SubTask subTask3 = new SubTask("Subtask 3", "Описание подзадачи 3", Status.NEW,
+                LocalDateTime.of(2020,NOVEMBER,22,2,0),
+                100, epic2.getId());//6
         taskManager.addSubTask(subTask1);
         taskManager.addSubTask(subTask2);
         taskManager.addSubTask(subTask3);
@@ -270,6 +296,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         System.out.println(taskManager.getIdTask(0));
         System.out.println(taskManager.getIdTask(1));
         System.out.println(taskManager.getIdEpic(2));
+        System.out.println(taskManager.getIdEpic(3));
         System.out.println(taskManager.getIdSubTask(5));
         System.out.println(taskManager.getIdTask(0));
 
@@ -279,9 +306,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
         FileBackedTasksManager manager2 = FileBackedTasksManager.loadFromFile(new File("recourses/task.csv"));
 
-        System.out.println(manager2.getIdEpic(2));
-        System.out.println(manager2.getIdSubTask(5));
-        System.out.println(manager2.getIdTask(0));
-        System.out.println(manager2.getTaskHistory());
+        //System.out.println(manager2.getIdEpic(2));
+        //System.out.println(manager2.getIdSubTask(5));
+        //System.out.println(manager2.getIdTask(0));
+        //System.out.println(manager2.getTaskHistory());
     }
 }

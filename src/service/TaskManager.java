@@ -13,6 +13,12 @@ public interface TaskManager {
 
     void updateEpicStatus(Epic epic);
 
+    void updateEpicDuration(Epic epic);
+
+    void updateEpicStartTime(Epic epic);
+
+    void updateEpicEndTime(Epic epic);
+
     void addEpic(Epic epic);
 
     List getAllTask();
@@ -46,6 +52,8 @@ public interface TaskManager {
     void updateEpic(Epic epic, Integer i);
 
     void updateSubTask(SubTask subTask, Integer i);
+
+    void getPrioritizedTasks();
 
     List<Task> getTaskHistory();
 }

@@ -5,6 +5,7 @@ import tasks.SubTask;
 import tasks.Task;
 import constans.Status;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,6 +37,9 @@ public class InMemoryTaskManager implements TaskManager {
         subTasks.put(subTaskId, subTask);
         epic.addSubTask(subTaskId);
         updateEpicStatus(epic);
+        updateEpicDuration(epic);
+        updateEpicStartTime(epic);
+        updateEpicEndTime(epic);
     }
 
     @Override
@@ -57,6 +61,45 @@ public class InMemoryTaskManager implements TaskManager {
         } else {
             epic.setStatus(Status.IN_PROGRESS);
         }
+    }
+
+    @Override
+    public void updateEpicDuration(Epic epic){
+        int sum = 0;
+        for(Integer id: epic.getSubTaskId()){
+            sum += subTasks.get(id).getDuration();
+        }
+        epic.setDuration(sum);
+    }
+
+    public void updateEpicStartTime(Epic epic){
+        LocalDateTime startTime;
+        List <LocalDateTime> startTimes = new ArrayList<>();
+        for(Integer id: epic.getSubTaskId()){
+            startTimes.add(subTasks.get(id).getStartTime());
+        }
+        startTime = startTimes.get(0);
+        for(int i = 0; i < startTimes.size(); i++){
+            if(startTime.isAfter(startTimes.get(i))){
+                startTime = startTimes.get(i);
+            }
+        }
+        epic.setStartTime(startTime);
+    }
+
+    public void updateEpicEndTime(Epic epic){
+        LocalDateTime endTime;
+        List <LocalDateTime> endTimes = new ArrayList<>();
+        for(Integer id: epic.getSubTaskId()){
+            endTimes.add(subTasks.get(id).getStartTime());
+        }
+        endTime = endTimes.get(0);
+        for(int i = 0; i < endTimes.size(); i++){
+            if(endTime.isBefore(endTimes.get(i))){
+                endTime = endTimes.get(i);
+            }
+        }
+        epic.setEndTime(endTime);
     }
 
     @Override
@@ -241,6 +284,10 @@ public class InMemoryTaskManager implements TaskManager {
             }
         }
         updateEpicStatus(epics.get(subTask.getEpicId()));
+    }
+
+    @Override
+    public void getPrioritizedTasks() {
     }
 
     @Override
