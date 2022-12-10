@@ -20,6 +20,13 @@ public class Epic extends Task {
         this.status = status;
     }
 
+    public Epic(String name, String description, Status status, LocalDateTime startTime, int duration, LocalDateTime endTime) {
+        super(name, description);
+        this.status = status;
+        this.startTime = startTime;
+        this.duration = duration;
+        this.endTime = endTime;
+    }
 
     public void addSubTask(int subTaskId) {
         subTaskIds.add(subTaskId);

@@ -106,6 +106,4 @@ public class Task {
                 ", endTime=" + getEndTime() +
                 '}';
     }
-
 }
-

@@ -5,6 +5,7 @@ import tasks.SubTask;
 import tasks.Task;
 
 import java.util.List;
+import java.util.Set;
 
 public interface TaskManager {
     void addTask(Task task);
@@ -53,7 +54,9 @@ public interface TaskManager {
 
     void updateSubTask(SubTask subTask, Integer i);
 
-    void getPrioritizedTasks();
+    List <Task> getPrioritizedTasks();
+
+    boolean isNoIntersections(Task task);
 
     List<Task> getTaskHistory();
 }
