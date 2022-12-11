@@ -8,16 +8,22 @@ import constans.Status;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class InMemoryTaskManager implements TaskManager {
+public class InMemoryTaskManager implements TaskManager, Comparator<Task> {
     protected Map<Integer, Task> tasks = new HashMap<>();
     protected Map<Integer, SubTask> subTasks = new HashMap<>();
     protected Map<Integer, Epic> epics = new HashMap<>();
     protected int generator = 0;
-    HistoryManager historyManager = Managers.getDefaultHistory();
+    protected HistoryManager historyManager = Managers.getDefaultHistory();
+    private TreeSet<Task> set = new TreeSet<>(this::compare);
+
+    @Override
+    public int compare(Task o1, Task o2) {
+        return (o1.getStartTime().compareTo(o2.getStartTime()));
+    }
 
     @Override
     public void addTask(Task task) {
-        if(isNoIntersections(task)){
+        if (isNoIntersections(task)) {
             int taskId = generator++;
             task.setId(taskId);
             tasks.put(taskId, task);
@@ -29,7 +35,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void addSubTask(SubTask subTask) {
-        if(isNoIntersections(subTask)){
+        if (isNoIntersections(subTask)) {
             int epicId = subTask.getEpicId();
             Epic epic = epics.get(epicId);
             if (epic == null) {
@@ -71,38 +77,38 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateEpicDuration(Epic epic){
+    public void updateEpicDuration(Epic epic) {
         int sum = 0;
-        for(Integer id: epic.getSubTaskId()){
+        for (Integer id : epic.getSubTaskId()) {
             sum += subTasks.get(id).getDuration();
         }
         epic.setDuration(sum);
     }
 
-    public void updateEpicStartTime(Epic epic){
+    public void updateEpicStartTime(Epic epic) {
         LocalDateTime startTime;
-        List <LocalDateTime> startTimes = new ArrayList<>();
-        for(Integer id: epic.getSubTaskId()){
+        List<LocalDateTime> startTimes = new ArrayList<>();
+        for (Integer id : epic.getSubTaskId()) {
             startTimes.add(subTasks.get(id).getStartTime());
         }
         startTime = startTimes.get(0);
-        for(int i = 0; i < startTimes.size(); i++){
-            if(startTime.isAfter(startTimes.get(i))){
+        for (int i = 0; i < startTimes.size(); i++) {
+            if (startTime.isAfter(startTimes.get(i))) {
                 startTime = startTimes.get(i);
             }
         }
         epic.setStartTime(startTime);
     }
 
-    public void updateEpicEndTime(Epic epic){
+    public void updateEpicEndTime(Epic epic) {
         LocalDateTime endTime;
-        List <LocalDateTime> endTimes = new ArrayList<>();
-        for(Integer id: epic.getSubTaskId()){
+        List<LocalDateTime> endTimes = new ArrayList<>();
+        for (Integer id : epic.getSubTaskId()) {
             endTimes.add(subTasks.get(id).getEndTime());
         }
         endTime = endTimes.get(0);
-        for(int i = 0; i < endTimes.size(); i++){
-            if(endTime.isBefore(endTimes.get(i))){
+        for (int i = 0; i < endTimes.size(); i++) {
+            if (endTime.isBefore(endTimes.get(i))) {
                 endTime = endTimes.get(i);
             }
         }
@@ -115,7 +121,6 @@ public class InMemoryTaskManager implements TaskManager {
         epic.setId(epicId);
         epics.put(epicId, epic);
         updateEpicStatus(epic);
-        //set.add(epic);
     }
 
     @Override
@@ -297,26 +302,18 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public List <Task> getPrioritizedTasks() {
+    public List<Task> getPrioritizedTasks() {
         return new ArrayList<>(set);
     }
 
-    private TreeSet<Task> set = new TreeSet<>(new Comparator<Task>() {
-        @Override
-        public int compare(Task o1, Task o2) {
-            return (o1.getStartTime().compareTo(o2.getStartTime()));
-        }
-    });
-
     @Override
     public boolean isNoIntersections(Task task) {
-        if(!set.isEmpty()) {
+        if (!set.isEmpty()) {
             for (Task prioritizedTask : set) {
-                if ((task.getStartTime().equals(prioritizedTask.getStartTime()) || task.getEndTime().equals(prioritizedTask.getEndTime()))||
-                        (task.getStartTime().isAfter(prioritizedTask.getStartTime()) && task.getStartTime().isBefore(prioritizedTask.getEndTime()))||
+                if ((task.getStartTime().equals(prioritizedTask.getStartTime()) || task.getEndTime().equals(prioritizedTask.getEndTime())) ||
+                        (task.getStartTime().isAfter(prioritizedTask.getStartTime()) && task.getStartTime().isBefore(prioritizedTask.getEndTime())) ||
                         (task.getEndTime().isAfter(prioritizedTask.getStartTime()) && task.getEndTime().isBefore(prioritizedTask.getEndTime())) ||
-                        (task.getStartTime().isBefore(prioritizedTask.getStartTime()) && task.getEndTime().isAfter(prioritizedTask.getEndTime())))
-                         {
+                        (task.getStartTime().isBefore(prioritizedTask.getStartTime()) && task.getEndTime().isAfter(prioritizedTask.getEndTime()))) {
                     return false;
                 }
             }
