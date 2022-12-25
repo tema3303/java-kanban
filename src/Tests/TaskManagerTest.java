@@ -3,14 +3,13 @@ package Tests;
 import constans.Status;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import service.TaskManager;
+import service.manager.TaskManager;
 import tasks.Epic;
 import tasks.SubTask;
 import tasks.Task;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import static constans.Status.*;

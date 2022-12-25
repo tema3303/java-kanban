@@ -5,9 +5,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import service.HistoryManager;
-import service.InMemoryHistoryManager;
-import service.InMemoryTaskManager;
+import service.history.InMemoryHistoryManager;
+import service.manager.InMemoryTaskManager;
 import tasks.Epic;
 import tasks.SubTask;
 import tasks.Task;
@@ -15,10 +14,8 @@ import tasks.Task;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static constans.Status.NEW;
 import static java.util.Calendar.APRIL;
 import static java.util.Calendar.MAY;
-import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryHistoryManagerTest {
     private Task taskTest;

@@ -1,8 +1,12 @@
-package service;
+package service.file;
 
 import constans.Status;
 import constans.TaskType;
 import exception.ManagerSaveException;
+import service.manager.InMemoryTaskManager;
+import service.manager.Managers;
+import service.manager.TaskManager;
+import service.history.HistoryManager;
 import tasks.Epic;
 import tasks.SubTask;
 import tasks.Task;
@@ -13,7 +17,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -148,7 +151,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return history;
     }
 
-    private void save() {
+    protected void save() {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
             bufferedWriter.write("id,type,name,status,description,startTime,duration,endTime,epic\r\n");
             taskToString(bufferedWriter, tasks.values());

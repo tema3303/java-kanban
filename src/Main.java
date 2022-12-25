@@ -1,14 +1,12 @@
-import constans.Status;
-import service.*;
+import service.http.HttpTaskServer;
+import service.http.KVServer;
 
-import tasks.Epic;
-import tasks.SubTask;
-import tasks.Task;
-
-import java.io.File;
+import java.io.IOException;
 
 public class Main {
-    public static void main(String[] args) {
-        //проверки осуществляется в service/FileBackedTasksManager.java ,как в предыдущих спринтах
+    public static void main(String[] args) throws IOException {
+        new KVServer().start();
+        HttpTaskServer server = new HttpTaskServer();
+        server.start();
     }
 }

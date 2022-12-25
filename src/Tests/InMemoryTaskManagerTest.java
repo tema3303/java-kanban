@@ -1,13 +1,7 @@
 package Tests;
 
 import org.junit.jupiter.api.*;
-import service.InMemoryTaskManager;
-import tasks.Task;
-
-import java.util.List;
-
-import static constans.Status.NEW;
-import static org.junit.jupiter.api.Assertions.*;
+import service.manager.InMemoryTaskManager;
 
 class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 

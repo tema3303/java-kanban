@@ -1,11 +1,10 @@
-package service;
+package service.manager;
 
 import tasks.Epic;
 import tasks.SubTask;
 import tasks.Task;
 
 import java.util.List;
-import java.util.Set;
 
 public interface TaskManager {
     void addTask(Task task);

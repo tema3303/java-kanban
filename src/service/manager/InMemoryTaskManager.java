@@ -1,5 +1,6 @@
-package service;
+package service.manager;
 
+import service.history.HistoryManager;
 import tasks.Epic;
 import tasks.SubTask;
 import tasks.Task;
@@ -14,7 +15,7 @@ public class InMemoryTaskManager implements TaskManager, Comparator<Task> {
     protected Map<Integer, Epic> epics = new HashMap<>();
     protected int generator = 0;
     protected HistoryManager historyManager = Managers.getDefaultHistory();
-    private TreeSet<Task> set = new TreeSet<>(this::compare);
+    protected TreeSet<Task> set = new TreeSet<>(this::compare);
 
     @Override
     public int compare(Task o1, Task o2) {
