@@ -13,9 +13,9 @@ import java.util.List;
 
 public class HttpTaskManager extends FileBackedTasksManager {
 
-    Gson gson;
-    KVTaskClient kvTaskClient;
-    HttpTaskManager inMemoryHistoryManager = new HttpTaskManager();
+    private final Gson gson;
+    private final KVTaskClient kvTaskClient;
+    private final HttpTaskManager inMemoryHistoryManager = new HttpTaskManager();
 
     public HttpTaskManager() {
         super(null);
@@ -29,42 +29,21 @@ public class HttpTaskManager extends FileBackedTasksManager {
         }.getType();
         List<Task> tasks = gson.fromJson(kvTaskClient.load("task"), tasksType);
         if (tasks != null) {
-            tasks.forEach(task -> {
-                int id = task.getId();
-                this.tasks.put(id, task);
-                this.set.add(task);
-                if (id > generator) {
-                    generator = id;
-                }
-            });
+            loadTask(tasks);
         }
 
         Type subtasksType = new TypeToken<List<SubTask>>() {
         }.getType();
         List<SubTask> subtasks = gson.fromJson(kvTaskClient.load("subtask"), subtasksType);
         if (subtasks != null) {
-            subtasks.forEach(subtask -> {
-                int id = subtask.getId();
-                this.subTasks.put(id, subtask);
-                this.set.add(subtask);
-                if (id > generator) {
-                    generator = id;
-                }
-            });
+            loadTask(subtasks);
         }
 
         Type epicsType = new TypeToken<List<Epic>>() {
         }.getType();
         List<Epic> epics = gson.fromJson(kvTaskClient.load("epic"), epicsType);
         if (epics != null) {
-            epics.forEach(epic -> {
-                int id = epic.getId();
-                this.epics.put(id, epic);
-                this.set.add(epic);
-                if (id > generator) {
-                    generator = id;
-                }
-            });
+            loadTask(epics);
         }
 
         Type historyType = new TypeToken<List<Task>>() {
@@ -87,5 +66,16 @@ public class HttpTaskManager extends FileBackedTasksManager {
         kvTaskClient.put("subtask", sub);
         String history = gson.toJson((getTaskHistory()));
         kvTaskClient.put("history", history);
+    }
+
+    private <T extends Task> void loadTask(List<T> tasks) {
+        tasks.forEach(task -> {
+            int id = task.getId();
+            this.tasks.put(id, task);
+            this.set.add(task);
+            if (id > generator) {
+                generator = id;
+            }
+        });
     }
 }
